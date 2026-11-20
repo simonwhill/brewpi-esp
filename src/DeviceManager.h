@@ -271,6 +271,9 @@ public:
 		switch (offset) {
 			case 0: return heatingPin;
 			case 1: return coolingPin;
+#ifdef DOOR_PIN_AS_ACTUATOR
+			case 2: return doorPin;  // Door terminal offered as an output (e.g. chiller pump via "Chamber Fan")
+#endif
 			default:
 				return -1;
 		}
@@ -288,7 +291,7 @@ public:
 	}
 
 	int8_t enumerateSensorPins(uint8_t offset) {
-#if BREWPI_SENSOR_PINS && defined(ARDUINO)
+#if BREWPI_SENSOR_PINS && defined(ARDUINO) && !defined(DOOR_PIN_AS_ACTUATOR)
 		if (offset==0)
 			return doorPin;
 #endif

@@ -893,6 +893,10 @@ void DeviceManager::enumeratePinDevices(EnumerateHardware& h, EnumDevicesCallbac
 			continue;
 		config.hw.pinNr = pin;
 		config.hw.invert = true; // make inverted default, because shiels have transistor on them
+#ifdef DOOR_PIN_AS_ACTUATOR
+		if (pin == doorPin)
+			config.hw.invert = false; // Door terminal is a bare GPIO driving an SSR directly: active high
+#endif
 		handleEnumeratedDevice(config, h, callback, doc);
 	}
 

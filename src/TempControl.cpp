@@ -422,7 +422,11 @@ void TempControl::updateOutputs() {
 	cooler->setActive(cooling);		
 	heater->setActive(!cc.lightAsHeater && heating);	
 	light->setActive(isDoorOpen() || (cc.lightAsHeater && heating) || cameraLightState.isActive());	
+#ifdef FAN_RUNS_UNLESS_OFF
+	fan->setActive(cs.mode != Modes::off);  // e.g. chiller recirculation pump: runs in every control mode, stops only in Off
+#else
 	fan->setActive(heating || cooling);
+#endif
 }
 
 
